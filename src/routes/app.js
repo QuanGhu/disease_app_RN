@@ -1,5 +1,5 @@
 import React from 'react'
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import HomeScreen from '../screens/home'
 
@@ -15,8 +15,7 @@ export default createAppContainer(
               let IconComponent = Ionicons;
               let iconName;
               if (routeName === 'Home') {
-                iconName = `ios-information-circle${focused ? '' : '-outline'}`
-                IconComponent = HomeIconWithBadge; 
+                iconName = `home${focused ? '' : '-outline'}`
               }
       
               return <IconComponent name={iconName} size={25} color={tintColor} />
