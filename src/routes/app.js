@@ -1,24 +1,28 @@
 import React from 'react'
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { createBottomTabNavigator, createAppContainer } from 'react-navigation'
 import HomeScreen from '../screens/home'
+import ProfileScreen from '../screens/profile/index'
 
 export default createAppContainer(
     createBottomTabNavigator(
       {
-        Home: { screen: HomeScreen }
+        Home: { screen: HomeScreen },
+        Profile: { screen: ProfileScreen }
       },
       {
         defaultNavigationOptions: ({ navigation }) => ({
             tabBarIcon: ({ focused, horizontal, tintColor }) => {
               const { routeName } = navigation.state;
-              let IconComponent = Ionicons;
-              let iconName;
+              let IconComponent = FontAwesome;
+              let icon
               if (routeName === 'Home') {
-                iconName = `home${focused ? '' : '-outline'}`
+                icon = `home`
+              } else if(routeName === 'Profile') {
+                icon = `user`
               }
       
-              return <IconComponent name={iconName} size={25} color={tintColor} />
+              return <IconComponent name={icon} size={25} color={tintColor} />
             },
         }),
         tabBarOptions: {
