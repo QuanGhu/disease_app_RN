@@ -1,8 +1,19 @@
 import React from 'react'
-import { View, Text, StyleSheet, AsyncStorage} from 'react-native'
-import { Container, Form, Item, Input, Label, Button} from 'native-base'
+import { View, Text, StyleSheet} from 'react-native'
+import { Container, Form, Item, Input, Label, Button, Picker, Icon} from 'native-base'
 
-class Login extends React.Component {
+class Register extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          selected2: null
+        };
+    }
+    onValueChange2(value) {
+        this.setState({
+          selected2: value
+        });
+    }
     _signInAsync = async () => {
         await AsyncStorage.setItem('token', 'abc');
         this.props.navigation.navigate('App');
@@ -23,14 +34,37 @@ class Login extends React.Component {
                                 <Input />
                             </Item>
                             <Item floatingLabel last style={styles.textWhite}>
+                                <Label style={styles.textWhite}>Masukan Nama Lengkap Anda</Label>
+                                <Input />
+                            </Item>
+                            <Item picker>
+                                <Picker
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="arrow-down" />}
+                                    style={{ width: undefined, color : 'white' }}
+                                    placeholder="Masukan Jenis Kelamin Anda"
+                                    placeholderStyle={{ color: "white" }}
+                                    placeholderIconColor="white"
+                                    selectedValue={this.state.selected2}
+                                    onValueChange={this.onValueChange2.bind(this)}
+                                >
+                                    <Picker.Item label="Laki Laki" value="male" />
+                                    <Picker.Item label="Perempuan" value="female" />
+                                </Picker>
+                            </Item>
+                            <Item floatingLabel last style={styles.textWhite}>
+                                <Label style={styles.textWhite}>Masukan Umur Anda</Label>
+                                <Input />
+                            </Item>
+                            <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Password Anda</Label>
                                 <Input />
                             </Item>
                             <Button style={styles.btn} onPress={this._signInAsync}>
-                                <Text style={styles.textWhite}>Masuk</Text>
+                                <Text style={styles.textWhite}>Dafter</Text>
                             </Button>
-                            <Button style={styles.btnRegister} onPress={ () => this.props.navigation.navigate('Register') }>
-                                <Text style={styles.textWhite}>Daftar</Text>
+                            <Button style={styles.btnRegister} onPress={() => this.props.navigation.navigate('Login') }>
+                                <Text style={styles.textWhite}>Masuk</Text>
                             </Button>
                         </Form>
                     </View>
@@ -92,4 +126,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Login
+export default Register
