@@ -8,13 +8,13 @@ class History extends React.Component {
             <Container>
                 <Content>
                     <List>
-                        <ListItem button>
+                        <ListItem button onPress={ () => this.props.navigation.navigate('Result')}>
                             <Text>4 Agustus 2019 15:10</Text>
                         </ListItem>
-                        <ListItem button>
+                        <ListItem button onPress={ () => this.props.navigation.navigate('Result')}>
                             <Text>4 Agustus 2019 15:15</Text>
                         </ListItem>
-                        <ListItem button>
+                        <ListItem button onPress={ () => this.props.navigation.navigate('Result')}>
                             <Text>4 Agustus 2019 16:20</Text>
                         </ListItem>
                     </List>
