@@ -58,7 +58,7 @@ class History extends React.Component {
                 <Content>
                     <List>
                         {this.state.diagnoses.map( (data, i) => (
-                            <ListItem key={i} button onPress={ () => this.props.navigation.navigate('Result')}>
+                            <ListItem key={i} button onPress={ () => this.props.navigation.navigate('Result',{id : data.id})}>
                                 <Text>{data.created_at} - {data.result}</Text>
                             </ListItem>
                         ))}
