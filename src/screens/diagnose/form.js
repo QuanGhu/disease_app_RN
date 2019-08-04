@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert,
   AsyncStorage
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Button, Container, Card } from 'native-base';
+import { Button, Container, Card, Toast } from 'native-base';
 
 export default class Form extends Component {
   constructor(props) {
@@ -124,6 +124,7 @@ export default class Form extends Component {
                     buttonText: 'Ok',
                     type : 'success'
                 })
+                this.props.navigation.navigate('Result',{id : responseJson.data})
             }
         })
         .catch((error) => {
