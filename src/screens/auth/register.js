@@ -1,22 +1,63 @@
 import React from 'react'
 import { View, Text, StyleSheet} from 'react-native'
 import { Container, Form, Item, Input, Label, Button, Picker, Icon} from 'native-base'
-
+import axios from 'axios'
 class Register extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          selected2: null
+            gender: "L",
+            name : "",
+            age : "",
+            address : "",
+            email : "",
+            password : "",
+            user_level_id : 2
         };
     }
     onValueChange2(value) {
         this.setState({
-          selected2: value
+          gender: value
         });
     }
-    _signInAsync = async () => {
-        await AsyncStorage.setItem('token', 'abc');
-        this.props.navigation.navigate('App');
+    _signUPAsync = () => {
+        console.log(this.state)
+        axios({
+            method : 'POST',
+            headers : {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            url : 'http://35.240.135.149/api/register',
+            data : this.state
+        })
+        .then(function (response) {
+            console.log(response.data.message)
+            this.props.navigation.navigate('Login');
+            Toast.show({
+                text: response.data.message,
+                buttonText: 'Ok',
+                type : 'success'
+            })
+        })
+        .catch(function (error) {
+            if(error.response.data.errors)
+            {
+                error.response.data.errors.map( err => {
+                    Toast.show({
+                        text: err,
+                        buttonText: 'Ok',
+                        type : 'danger'
+                    })
+                })
+            } else {
+                Toast.show({
+                    text: error.response.data.message,
+                    buttonText: 'Ok',
+                    type : 'danger'
+                })
+            }
+        })
     };
 
     render() {
@@ -31,11 +72,11 @@ class Register extends React.Component {
                         <Form>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Email Anda</Label>
-                                <Input />
+                                <Input onChangeText={ (text) => this.setState({ email : text })}/>
                             </Item>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Nama Lengkap Anda</Label>
-                                <Input />
+                                <Input onChangeText={ (text) => this.setState({ name : text})}/>
                             </Item>
                             <Item picker>
                                 <Picker
@@ -45,23 +86,27 @@ class Register extends React.Component {
                                     placeholder="Masukan Jenis Kelamin Anda"
                                     placeholderStyle={{ color: "white" }}
                                     placeholderIconColor="white"
-                                    selectedValue={this.state.selected2}
+                                    selectedValue={this.state.gender}
                                     onValueChange={this.onValueChange2.bind(this)}
                                 >
-                                    <Picker.Item label="Laki Laki" value="male" />
-                                    <Picker.Item label="Perempuan" value="female" />
+                                    <Picker.Item label="Laki Laki" value="L" />
+                                    <Picker.Item label="Perempuan" value="P" />
                                 </Picker>
                             </Item>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Umur Anda</Label>
-                                <Input />
+                                <Input onChangeText={ (text) => this.setState({ age : text})}/>
+                            </Item>
+                            <Item floatingLabel last style={styles.textWhite}>
+                                <Label style={styles.textWhite}>Masukan Alamat Anda</Label>
+                                <Input onChangeText={ (text) => this.setState({ address : text})}/>
                             </Item>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Password Anda</Label>
-                                <Input />
+                                <Input secureTextEntry={true} onChangeText={ (text) => this.setState({ password : text})}/>
                             </Item>
-                            <Button style={styles.btn} onPress={this._signInAsync}>
-                                <Text style={styles.textWhite}>Dafter</Text>
+                            <Button style={styles.btn} onPress={this._signUPAsync}>
+                                <Text style={styles.textWhite}>Daftar</Text>
                             </Button>
                             <Button style={styles.btnRegister} onPress={() => this.props.navigation.navigate('Login') }>
                                 <Text style={styles.textWhite}>Masuk</Text>
