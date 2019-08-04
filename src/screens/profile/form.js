@@ -68,6 +68,54 @@ class Form extends React.Component {
         });
     }
 
+    updateProfile = async () => {
+        fetch('http://35.240.135.149/api/user/update', {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization' : `Bearer ${await AsyncStorage.getItem('token')}`
+            },
+            body : JSON.stringify(this.state)
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(!responseJson.success) {
+                if(responseJson.errors) {
+                    responseJson.errors.map( err => {
+                        Toast.show({
+                            text: err,
+                            buttonText: 'Ok',
+                            type : 'danger'
+                        })
+                    })
+                } else {
+                    Toast.show({
+                        text: responseJson.message,
+                        buttonText: 'Ok',
+                        type : 'danger'
+                    })
+                }
+            } else {
+                Toast.show({
+                    text: responseJson.message,
+                    buttonText: 'Ok',
+                    type : 'success'
+                })
+                this.props.navigation.navigate('Profile');
+            }
+
+        })
+        .catch((error) => {
+            console.log(error)
+            Toast.show({
+                text: 'Call Administrator',
+                buttonText: 'Ok',
+                type : 'danger'
+            })
+        });
+    }
+
     render() {
         return (
             <Container>
@@ -99,7 +147,7 @@ class Form extends React.Component {
                             <Picker.Item label="Perempuan" value="P" />
                         </Picker>
 
-                        <Button style={{ backgroundColor : '#3F51B5', justifyContent : 'center', alignContent : 'center', marginBottom : 15}}>
+                        <Button onPress={this.updateProfile.bind(this)} style={{ backgroundColor : '#3F51B5', justifyContent : 'center', alignContent : 'center', marginBottom : 15}}>
                             <Text style={{ color : 'white' }}> Perbarui Data </Text>
                         </Button>
                     </Card>
