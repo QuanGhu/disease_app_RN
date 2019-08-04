@@ -7,43 +7,78 @@ class Login extends React.Component {
         super()
         this.state = {
             email : "",
-            password : "",
-            user_level_id : 2
+            password : ""
         }
     }
-    _signInAsync = async () => {
-        console.log(this.state)
-        axios({
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
+    _signInAsync() {
+        fetch('http://35.240.135.149/api/login', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
-            url : 'http://35.240.135.149/api/login',
-            data : this.state
+            body: JSON.stringify(this.state)
         })
-        .then(function (response) {
-            AsyncStorage.setItem('token', response.data.token);
-            this.props.navigation.navigate('App');
-        })
-        .catch(function (error) {
-            if(error.response.data.errors)
-            {
-                error.response.data.errors.map( err => {
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(!responseJson.success) {
+                if(responseJson.errors) {
+                    responseJson.errors.map( err => {
+                        Toast.show({
+                            text: err,
+                            buttonText: 'Ok',
+                            type : 'danger'
+                        })
+                    })
+                } else {
                     Toast.show({
-                        text: err,
+                        text: responseJson.message,
                         buttonText: 'Ok',
                         type : 'danger'
                     })
-                })
+                }
             } else {
-                Toast.show({
-                    text: error.response.data.message,
-                    buttonText: 'Ok',
-                    type : 'danger'
-                })
+                AsyncStorage.setItem('token', responseJson.token);
+                this.props.navigation.navigate('App');
+
             }
         })
+        .catch((error) => {
+          console.error(error.errors);
+        });
+        // axios({
+        //     method : 'POST',
+        //     headers : {
+        //         'Accept' : 'application/json',
+        //         'Content-Type' : 'application/json'
+        //     },
+        //     url : 'http://35.240.135.149/api/login',
+        //     data : this.state
+        // })
+        // .then(function (res) {
+        //     console.log(res)
+        //     AsyncStorage.setItem('token', res.data.token);
+        //     this.props.navigation.navigate('App');
+        // })
+        // .catch(function (error) {
+        //     console.log(error.response)
+        //     // if(error.response.data.errors)
+        //     // {
+        //     //     error.response.data.errors.map( err => {
+        //     //         Toast.show({
+        //     //             text: err,
+        //     //             buttonText: 'Ok',
+        //     //             type : 'danger'
+        //     //         })
+        //     //     })
+        //     // } else {
+        //     //     Toast.show({
+        //     //         text: error.response.data.message,
+        //     //         buttonText: 'Ok',
+        //     //         type : 'danger'
+        //     //     })
+        //     // }
+        // })
     };
 
     render() {
@@ -64,7 +99,7 @@ class Login extends React.Component {
                                 <Label style={styles.textWhite}>Masukan Password Anda</Label>
                                 <Input secureTextEntry={true} onChangeText={ (text) => this.setState({ password : text }) } value={this.state.password}/>
                             </Item>
-                            <Button style={styles.btn} onPress={this._signInAsync}>
+                            <Button style={styles.btn} onPress={this._signInAsync.bind(this)}>
                                 <Text style={styles.textWhite}>Masuk</Text>
                             </Button>
                             <Button style={styles.btnRegister} onPress={ () => this.props.navigation.navigate('Register') }>
