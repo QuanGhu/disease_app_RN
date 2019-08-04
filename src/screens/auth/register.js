@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet} from 'react-native'
-import { Container, Form, Item, Input, Label, Button, Picker, Icon} from 'native-base'
+import { Container, Form, Item, Input, Label, Button, Picker, Icon, Toast} from 'native-base'
 import axios from 'axios'
 class Register extends React.Component {
     constructor(props) {
@@ -21,43 +21,48 @@ class Register extends React.Component {
         });
     }
     _signUPAsync = () => {
-        console.log(this.state)
-        axios({
-            method : 'POST',
-            headers : {
-                'Accept' : 'application/json',
-                'Content-Type' : 'application/json'
+        fetch('http://35.240.135.149/api/register', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
-            url : 'http://35.240.135.149/api/register',
-            data : this.state
+            body: JSON.stringify(this.state)
         })
-        .then(function (response) {
-            console.log(response.data.message)
-            this.props.navigation.navigate('Login');
-            Toast.show({
-                text: response.data.message,
-                buttonText: 'Ok',
-                type : 'success'
-            })
-        })
-        .catch(function (error) {
-            if(error.response.data.errors)
-            {
-                error.response.data.errors.map( err => {
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(!responseJson.success) {
+                if(responseJson.errors) {
+                    responseJson.errors.map( err => {
+                        Toast.show({
+                            text: err,
+                            buttonText: 'Ok',
+                            type : 'danger'
+                        })
+                    })
+                } else {
                     Toast.show({
-                        text: err,
+                        text: responseJson.message,
                         buttonText: 'Ok',
                         type : 'danger'
                     })
-                })
+                }
             } else {
                 Toast.show({
-                    text: error.response.data.message,
+                    text: responseJson.message,
                     buttonText: 'Ok',
-                    type : 'danger'
+                    type : 'success'
                 })
+                this.props.navigation.navigate('Login');
             }
         })
+        .catch((error) => {
+            Toast.show({
+                text: 'Call Administrator',
+                buttonText: 'Ok',
+                type : 'danger'
+            })
+        });
     };
 
     render() {
@@ -105,7 +110,7 @@ class Register extends React.Component {
                                 <Label style={styles.textWhite}>Masukan Password Anda</Label>
                                 <Input secureTextEntry={true} onChangeText={ (text) => this.setState({ password : text})}/>
                             </Item>
-                            <Button style={styles.btn} onPress={this._signUPAsync}>
+                            <Button style={styles.btn} onPress={this._signUPAsync.bind(this)}>
                                 <Text style={styles.textWhite}>Daftar</Text>
                             </Button>
                             <Button style={styles.btnRegister} onPress={() => this.props.navigation.navigate('Login') }>
