@@ -1,11 +1,49 @@
 import React from 'react'
 import { View, Text, StyleSheet, AsyncStorage} from 'react-native'
-import { Container, Form, Item, Input, Label, Button} from 'native-base'
-
+import { Container, Form, Item, Input, Label, Button, Toast} from 'native-base'
+import axios from 'axios'
 class Login extends React.Component {
+    constructor(){
+        super()
+        this.state = {
+            email : "",
+            password : "",
+            user_level_id : 2
+        }
+    }
     _signInAsync = async () => {
-        await AsyncStorage.setItem('token', 'abc');
-        this.props.navigation.navigate('App');
+        console.log(this.state)
+        axios({
+            method : 'POST',
+            headers : {
+                'Accept' : 'application/json',
+                'Content-Type' : 'application/json'
+            },
+            url : 'http://35.240.135.149/api/login',
+            data : this.state
+        })
+        .then(function (response) {
+            AsyncStorage.setItem('token', response.data.token);
+            this.props.navigation.navigate('App');
+        })
+        .catch(function (error) {
+            if(error.response.data.errors)
+            {
+                error.response.data.errors.map( err => {
+                    Toast.show({
+                        text: err,
+                        buttonText: 'Ok',
+                        type : 'danger'
+                    })
+                })
+            } else {
+                Toast.show({
+                    text: error.response.data.message,
+                    buttonText: 'Ok',
+                    type : 'danger'
+                })
+            }
+        })
     };
 
     render() {
@@ -20,11 +58,11 @@ class Login extends React.Component {
                         <Form>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Email Anda</Label>
-                                <Input />
+                                <Input onChangeText={ (text) => this.setState({ email : text}) } value={this.state.email}/>
                             </Item>
                             <Item floatingLabel last style={styles.textWhite}>
                                 <Label style={styles.textWhite}>Masukan Password Anda</Label>
-                                <Input />
+                                <Input secureTextEntry={true} onChangeText={ (text) => this.setState({ password : text }) } value={this.state.password}/>
                             </Item>
                             <Button style={styles.btn} onPress={this._signInAsync}>
                                 <Text style={styles.textWhite}>Masuk</Text>
