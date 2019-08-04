@@ -44,41 +44,12 @@ class Login extends React.Component {
             }
         })
         .catch((error) => {
-          console.error(error.errors);
+            Toast.show({
+                text: 'Call Administrator',
+                buttonText: 'Ok',
+                type : 'danger'
+            })
         });
-        // axios({
-        //     method : 'POST',
-        //     headers : {
-        //         'Accept' : 'application/json',
-        //         'Content-Type' : 'application/json'
-        //     },
-        //     url : 'http://35.240.135.149/api/login',
-        //     data : this.state
-        // })
-        // .then(function (res) {
-        //     console.log(res)
-        //     AsyncStorage.setItem('token', res.data.token);
-        //     this.props.navigation.navigate('App');
-        // })
-        // .catch(function (error) {
-        //     console.log(error.response)
-        //     // if(error.response.data.errors)
-        //     // {
-        //     //     error.response.data.errors.map( err => {
-        //     //         Toast.show({
-        //     //             text: err,
-        //     //             buttonText: 'Ok',
-        //     //             type : 'danger'
-        //     //         })
-        //     //     })
-        //     // } else {
-        //     //     Toast.show({
-        //     //         text: error.response.data.message,
-        //     //         buttonText: 'Ok',
-        //     //         type : 'danger'
-        //     //     })
-        //     // }
-        // })
     };
 
     render() {
