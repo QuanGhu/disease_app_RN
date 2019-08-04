@@ -9,7 +9,7 @@ class Home extends React.Component {
               flex : 1, padding : 25}
           }>
             <Text style={ { textAlign : 'center'}}> Selamat Datang </Text>
-            <Button style={{justifyContent: 'center', marginTop : 15}} info>
+            <Button onPress={ () => this.props.navigation.navigate('FormDiagnose')} style={{justifyContent: 'center', marginTop : 15}} info>
               <Text style={ { textAlign : 'center', color : 'white'}}> Buat Analisa Baru </Text>
             </Button>
           </View>

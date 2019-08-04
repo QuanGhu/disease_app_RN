@@ -6,11 +6,13 @@ import ProfileScreen from '../screens/profile/index'
 import EditProfileScreen from '../screens/profile/form'
 import HistoryScreen from '../screens/diagnose/history'
 import ResultScreen from '../screens/diagnose/result'
+import DiagnoseScreen from '../screens/diagnose/form'
 
 const DiagnoseStack = createStackNavigator({
   History : { screen: HistoryScreen },
   Result : { screen: ResultScreen },
-  EditProfile : { screen : EditProfileScreen }
+  EditProfile : { screen : EditProfileScreen },
+  FormDiagnose : { screen : DiagnoseScreen}
 },
 {
   headerMode: 'none',
