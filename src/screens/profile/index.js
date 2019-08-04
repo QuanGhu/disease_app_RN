@@ -76,7 +76,7 @@ class Index extends React.Component {
                   <Text style={{ marginBottom : 15}}> {this.state.gender} </Text>
                   <H3> Email </H3>
                   <Text style={{ marginBottom : 15}}> {this.state.email} </Text>
-                  <Button style={{ backgroundColor : '#3F51B5', justifyContent : 'center', alignContent : 'center', marginBottom : 15}}>
+                  <Button onPress={ () => this.props.navigation.navigate('EditProfile') } style={{ backgroundColor : '#3F51B5', justifyContent : 'center', alignContent : 'center', marginBottom : 15}}>
                     <Text style={{ color : 'white' }}> Ubah Data </Text>
                   </Button>
                   <Button onPress={ this._signOutAsync } style={{ backgroundColor : '#00BCD4', justifyContent : 'center', alignContent : 'center'}}>

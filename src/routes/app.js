@@ -3,12 +3,14 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
 import HomeScreen from '../screens/home'
 import ProfileScreen from '../screens/profile/index'
+import EditProfileScreen from '../screens/profile/form'
 import HistoryScreen from '../screens/diagnose/history'
 import ResultScreen from '../screens/diagnose/result'
 
 const DiagnoseStack = createStackNavigator({
   History : { screen: HistoryScreen },
   Result : { screen: ResultScreen },
+  EditProfile : { screen : EditProfileScreen }
 },
 {
   headerMode: 'none',
