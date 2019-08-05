@@ -140,58 +140,57 @@ export default class Form extends Component {
   render() {
     return (
       <Container>
-        <Card style={{ padding : 15}}>
+        <Card style={{ padding : 15, flex : 0.9 }}>
             <View style={styles.storyContainer}>
-            <FlatList data={this.state.causes} ListHeaderComponent={this.renderHeader} keyExtractor={(item, index) => `list-item-${index}`} extraData={this.state} renderItem={({item}) => {
-                return <TouchableOpacity style={{
-                    flexDirection: 'row',
-                    padding: 10,
-                    borderBottomWidth: 1,
-                    borderStyle: 'solid',
-                    borderColor: '#ecf0f1'
-                }} onPress={() => {
-                this.press(item)
-                }}>
-                <View style={{
-                    flex: 3,
-                    alignItems: 'flex-start',
-                    justifyContent: 'center'
-                }}>
-                    {item.check
-                    ? (
-                        <Text style={{
-                        fontWeight: 'bold'
-                        }}>{`${item.name} ${item.name}`}</Text>
-                    )
-                    : (
-                        <Text>{`${item.name} ${item.name}`}</Text>
-                    )}
-                </View>
-                <View style={{
-                    flex: 1,
-                    alignItems: 'flex-end',
-                    justifyContent: 'center'
-                }}>
-                    {item.check
-                    ? (
-                        <Icon name="ios-checkbox" size={30} color={primaryColor}></Icon>
-                    )
-                    : (
-                        <Icon name="ios-square-outline" size={30} color={darkGrey}></Icon>
-                    )}
-                </View>
-                </TouchableOpacity>
-            }}/>
+                <FlatList data={this.state.causes} ListHeaderComponent={this.renderHeader} keyExtractor={(item, index) => `list-item-${index}`} extraData={this.state} renderItem={({item}) => {
+                    return <TouchableOpacity style={{
+                        flexDirection: 'row',
+                        padding: 10,
+                        borderBottomWidth: 1,
+                        borderStyle: 'solid',
+                        borderColor: '#ecf0f1'
+                    }} onPress={() => {
+                    this.press(item)
+                    }}>
+                    <View style={{
+                        flex: 3,
+                        alignItems: 'flex-start',
+                        justifyContent: 'center'
+                    }}>
+                        {item.check
+                        ? (
+                            <Text style={{
+                            fontWeight: 'bold'
+                            }}>{`${item.name} ${item.name}`}</Text>
+                        )
+                        : (
+                            <Text>{`${item.name} ${item.name}`}</Text>
+                        )}
+                    </View>
+                    <View style={{
+                        flex: 1,
+                        alignItems: 'flex-end',
+                        justifyContent: 'center'
+                    }}>
+                        {item.check
+                        ? (
+                            <Icon name="ios-checkbox" size={30} color={primaryColor}></Icon>
+                        )
+                        : (
+                            <Icon name="ios-square-outline" size={30} color={darkGrey}></Icon>
+                        )}
+                    </View>
+                    </TouchableOpacity>
+                }}/>
             </View>
-            <View>
+            <View style={{ flexGrow : 0.2, marginTop : 40}}>
             {(this.state.selectedCause.length > 1)
                 ? (
                     <View style={{
                         flex: 1,
                         alignItems: 'stretch',
                         justifyContent: 'center',
-                        alignContent: 'center',
-                        marginTop : 70
+                        alignContent: 'center'
                         }}>
                             <Button onPress={this.analyze.bind(this)} style={{justifyContent: 'center', marginTop : 15}} info>
                                 <Text style={ { textAlign : 'center', color : 'white'}}> Analisa </Text>
@@ -221,10 +220,10 @@ const Header = () => (
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex : 0.9,
     backgroundColor: 'white',
     paddingTop: 20,
-    paddingBottom: 0
+    paddingBottom: 0,
   },
   containerFooter: {
     height: 50,
